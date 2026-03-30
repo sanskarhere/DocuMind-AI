@@ -1,10 +1,9 @@
 
-
 class Retriever:
     def __init__(self,vector_store):
         self.vector_store=vector_store
 
-    def get_relevant_documents(self,query:str,k:int=3):
+    def get_relevant_documents(self,query:str,k:int=5):
         '''
         Retrieve Top K Relevant Document'''
 
@@ -15,9 +14,9 @@ class Retriever:
     def format_context(self,documents):
         '''
         Convert Documents into a single context string'''
-
-      
-        context='\n\n'.join([doc.page_content for doc in documents])
+        context = ""
+        for i, doc in enumerate(documents):
+           context += f"[Chunk {i+1}]\n{doc.page_content}\n\n"
         return context
     def retrieve(self,query:str,k:int=3):
         '''

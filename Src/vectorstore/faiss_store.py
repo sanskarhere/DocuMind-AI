@@ -32,7 +32,7 @@ class FAISSSSTORE:
         '''
         self.vector_store = FAISS.load_local(
             folder_path=folder_path,
-            embbeddings=self.embedding_model,
+            embeddings=self.embedding_model,
             allow_dangerous_deserialization=True
         )
         return self.vector_store
