@@ -159,7 +159,7 @@ Explain the attention mechanism from this paper.
 
 ## Future Improvements
 
-Multi-document support, chat memory, source citations, FastAPI deployment, UI, Docker, and retrieval evaluation.
+Multi-document support, Docker, and retrieval evaluation.
 
 ---
 
