@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sign In — DocuMind AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    background:#0F0F1A;
+    color:#fff;
+    min-height:100vh;
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;
+    background-image:radial-gradient(circle at 20% 20%, rgba(124,58,237,.18), transparent 50%),radial-gradient(circle at 80% 80%, rgba(124,58,237,.12), transparent 50%);
+  }
+  .card{
+    width:100%;max-width:420px;
+    background:#1A1A2E;
+    border:1px solid rgba(124,58,237,.2);
+    border-radius:16px;
+    padding:36px 28px;
+    box-shadow:0 20px 60px -10px rgba(124,58,237,.35);
+  }
+  .brand{text-align:center;margin-bottom:28px}
+  .brand h1{
+    margin:0;font-size:24px;font-weight:700;
+    background:linear-gradient(135deg,#fff,#c4b5fd);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .brand .dot{color:#7C3AED}
+  .brand p{margin:6px 0 0;font-size:13px;color:#9ca3af}
+  .field{margin-bottom:16px}
+  label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:#d1d5db}
+  input[type=email],input[type=password]{
+    width:100%;padding:12px 14px;
+    background:#252540;border:1px solid transparent;
+    border-radius:10px;color:#fff;font-size:14px;font-family:inherit;
+    outline:none;transition:border-color .15s;
+  }
+  input::placeholder{color:#6b7280}
+  input:focus{border-color:#7C3AED}
+  .error{color:#F87171;font-size:12px;margin-top:6px;min-height:14px;display:block}
+  .row{display:flex;align-items:center;justify-content:space-between;margin:8px 0 20px;font-size:13px}
+  .check{display:flex;align-items:center;gap:8px;color:#d1d5db;cursor:pointer}
+  .check input{accent-color:#7C3AED}
+  .row a{color:#a78bfa;text-decoration:none}
+  .row a:hover{text-decoration:underline}
+  .btn{
+    width:100%;padding:12px 16px;border:none;border-radius:10px;
+    background:#7C3AED;color:#fff;font-weight:600;font-size:15px;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;
+    transition:background .15s,transform .05s;
+  }
+  .btn:hover:not(:disabled){background:#6d28d9}
+  .btn:active{transform:scale(.99)}
+  .btn:disabled{opacity:.7;cursor:not-allowed}
+  .spinner{
+    width:16px;height:16px;border:2px solid rgba(255,255,255,.4);
+    border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .footer{text-align:center;margin-top:20px;font-size:13px;color:#9ca3af}
+  .footer a{color:#a78bfa;text-decoration:none;font-weight:500}
+  .footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="brand">
+      <h1>DocuMind<span class="dot"> AI</span></h1>
+      <p>Chat with your documents, instantly.</p>
+    </div>
+    <form id="loginForm" novalidate>
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" placeholder="Enter your email" autocomplete="email" />
+        <span class="error" id="emailError"></span>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" />
+        <span class="error" id="passwordError"></span>
+      </div>
+      <div class="row">
+        <label class="check"><input type="checkbox" id="remember" /> Remember me</label>
+        <a href="#" onclick="event.preventDefault();alert('Password reset link sent (demo).')">Forgot password?</a>
+      </div>
+      <button class="btn" type="submit" id="submitBtn">
+        <span id="btnLabel">Sign In</span>
+      </button>
+    </form>
+    <div class="footer">
+      Don't have an account? <a href="register.html">Register →</a>
+    </div>
+  </div>
+<script>
+  const form = document.getElementById('loginForm');
+  const emailEl = document.getElementById('email');
+  const passEl = document.getElementById('password');
+  const emailErr = document.getElementById('emailError');
+  const passErr = document.getElementById('passwordError');
+  const btn = document.getElementById('submitBtn');
+  const btnLabel = document.getElementById('btnLabel');
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function validate(){
+    let ok = true;
+    emailErr.textContent=''; passErr.textContent='';
+    const email = emailEl.value.trim();
+    const pass = passEl.value;
+    if(!email){emailErr.textContent='Email is required';ok=false;}
+    else if(!emailRegex.test(email)){emailErr.textContent='Please enter a valid email';ok=false;}
+    if(!pass){passErr.textContent='Password is required';ok=false;}
+    else if(pass.length<6){passErr.textContent='Password must be at least 6 characters';ok=false;}
+    return ok;
+  }
+
+  form.addEventListener('submit',(e)=>{
+    e.preventDefault();
+    if(!validate()) return;
+    btn.disabled = true;
+    btnLabel.textContent = 'Signing in';
+    const sp = document.createElement('span');
+    sp.className='spinner'; btn.appendChild(sp);
+    setTimeout(()=>{
+      localStorage.setItem('documind_token','demo-token-123');
+      window.location.href = '/';
+    },500);
+  });
+
+  [emailEl,passEl].forEach(el=>el.addEventListener('input',()=>{
+    if(el===emailEl) emailErr.textContent='';
+    else passErr.textContent='';
+  }));
+</script>
+</body>
+</html>

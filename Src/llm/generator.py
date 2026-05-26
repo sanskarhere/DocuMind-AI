@@ -1,6 +1,7 @@
 from langchain_groq import ChatGroq
 from langchain_core.messages import HumanMessage
-
+from dotenv import load_dotenv
+load_dotenv()
 class Generator:
     def __init__(self,temperature:float=0.14):
         self.llm=ChatGroq(
